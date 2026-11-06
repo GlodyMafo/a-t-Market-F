@@ -23,6 +23,7 @@ export const heroSlides: Banner[] = [
     href: "/import",
     theme: "brand",
     icon: Globe,
+    image: "/banners/banner2.png",
   },
   {
     id: "local",
@@ -32,6 +33,7 @@ export const heroSlides: Banner[] = [
     href: "/products",
     theme: "dark",
     icon: Store,
+    image: "/banners/banner3.png",
   },
   {
     id: "mobile-money",
@@ -41,6 +43,7 @@ export const heroSlides: Banner[] = [
     href: "/import",
     theme: "light",
     icon: Smartphone,
+     image: "/banners/banner4.png",
   },
 ];
 

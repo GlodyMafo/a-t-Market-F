@@ -18,3 +18,8 @@ export function resolveImageUrl(url: string | null | undefined): string | null {
   if (/^https?:\/\//i.test(url)) return url;
   return `${env.apiUrl}${url.startsWith("/") ? "" : "/"}${url}`;
 }
+
+/** Minuscules sans accents, pour comparer des textes. */
+export function normalizeText(value: string): string {
+  return value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+}

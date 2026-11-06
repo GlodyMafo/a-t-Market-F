@@ -1,22 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
-import { Globe, Search, ShoppingCart, User } from "lucide-react";
+import { Globe, ShoppingCart, User } from "lucide-react";
+import { SearchBox } from "@/components/layout/SearchBox";
 import { Logo } from "@/components/ui/Logo";
 import { useCartCount } from "@/features/cart/useCartCount";
 
 export function Header() {
-  const router = useRouter();
-  const [query, setQuery] = useState("");
   const cartCount = useCartCount();
-
-  function onSubmit(event: FormEvent) {
-    event.preventDefault();
-    const q = query.trim();
-    router.push(q ? `/products?q=${encodeURIComponent(q)}` : "/products");
-  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white">
@@ -42,25 +33,9 @@ export function Header() {
           </Link>
         </nav>
 
-        <form role="search" onSubmit={onSubmit} className="order-3 w-full md:order-2 md:max-w-2xl md:flex-1">
-          <label htmlFor="site-search" className="sr-only">
-            Rechercher un produit
-          </label>
-          <div className="flex h-11 overflow-hidden rounded-full border-2 border-ink/80 focus-within:border-brand-500">
-            <input
-              id="site-search"
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              maxLength={100}
-              placeholder="Rechercher un produit"
-              className="min-w-0 flex-1 bg-transparent px-4 text-sm outline-none"
-            />
-            <button type="submit" aria-label="Lancer la recherche" className="flex w-14 items-center justify-center bg-brand-500 text-white hover:bg-brand-600">
-              <Search className="h-5 w-5" aria-hidden />
-            </button>
-          </div>
-        </form>
+        <div className="order-3 w-full md:order-2 md:max-w-2xl md:flex-1">
+          <SearchBox />
+        </div>
       </div>
     </header>
   );
