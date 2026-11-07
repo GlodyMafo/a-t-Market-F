@@ -11,3 +11,6 @@ export const SORT_OPTIONS: ReadonlyArray<{ value: CatalogSort; label: string }> 
 ];
 
 export const CATALOG_SORTS: readonly string[] = SORT_OPTIONS.map((o) => o.value);
+
+/** Affiche « Plus que N en stock » quand le stock est inférieur ou égal à ce seuil (choix d'affichage). */
+export const LOW_STOCK_NOTICE = 5;

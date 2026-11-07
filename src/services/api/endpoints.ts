@@ -2,7 +2,21 @@ const id = encodeURIComponent;
 
 export const endpoints = {
   health: { live: "/health", ready: "/health/ready" },
-  auth: { register: "/auth/register", login: "/auth/login", me: "/auth/me" },
+  auth: {
+    register: "/auth/register",
+    login: "/auth/login",
+    me: "/auth/me",
+    verifyEmail: "/auth/verify-email",
+    resendVerification: "/auth/verify-email/resend",
+    forgotPassword: "/auth/forgot-password",
+    resetPassword: "/auth/reset-password",
+    changePassword: "/auth/password",
+  },
+  users: {
+    me: "/api/users/me",
+    addresses: "/api/users/me/addresses",
+    address: (aid: string) => `/api/users/me/addresses/${id(aid)}`,
+  },
   products: { list: "/api/products", detail: (pid: string) => `/api/products/${id(pid)}` },
   categories: { list: "/api/categories", detail: (cid: string) => `/api/categories/${id(cid)}` },
   subCategories: { list: "/api/subcategories", detail: (sid: string) => `/api/subcategories/${id(sid)}` },

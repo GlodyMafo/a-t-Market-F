@@ -9,7 +9,15 @@ export interface SessionUser {
   email: string;
   phone: string | null;
   role: Role;
+  createdAt?: IsoDate;
+  // Ces champs arrivent avec l'évolution du backend (section 4). Absents tant qu'elle n'est pas appliquée.
+  firstName?: string | null;
+  lastName?: string | null;
+  birthDate?: IsoDate | null;
+  gender?: "FEMALE" | "MALE" | null;
+  emailVerifiedAt?: IsoDate | null;
 }
+
 export interface AuthResult {
   user: SessionUser;
   token: string;
@@ -131,6 +139,22 @@ export interface SubCategory {
   isActive: boolean;
   categoryId: string;
   category: Category;
+}
+
+/** Devis tel qu'affiché dans le compte. Les champs internes renvoyés par le backend sont volontairement ignorés. */
+export interface UserQuote {
+  id: string;
+  productUrl: string;
+  productName: string | null;
+  productPrice: Money;
+  shippingCost: Money;
+  customsCost: Money;
+  commissionCost: Money;
+  totalPrice: Money;
+  currency: string;
+  status: QuoteStatus;
+  expiresAt: IsoDate | null;
+  createdAt: IsoDate;
 }
 
 export type { CartItemIssue, QuoteStatus };

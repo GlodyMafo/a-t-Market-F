@@ -13,9 +13,10 @@ interface Props {
   href?: string;
   params: ProductListParams;
   layout?: "grid" | "scroll";
+  excludeId?: string;
 }
 
-export function ProductSection({ title, href, params, layout = "grid" }: Props) {
+export function ProductSection({ title, href, params, layout = "grid", excludeId }: Props) {
   const { data, isLoading, error, refetch } = useProducts(params);
 
   if (isLoading) {
@@ -32,13 +33,15 @@ export function ProductSection({ title, href, params, layout = "grid" }: Props) 
       </Section>
     );
   }
-  if (!data || data.items.length === 0) return null;
+
+  const items = (data?.items ?? []).filter((product) => product.id !== excludeId);
+  if (items.length === 0) return null;
 
   const scroll = layout === "scroll";
   return (
     <Section title={title} href={href}>
       <div className={scroll ? PRODUCT_ROW_CLASS : PRODUCT_GRID_CLASS}>
-        {data.items.map((product) =>
+        {items.map((product) =>
           scroll ? (
             <div key={product.id} className="w-36 shrink-0 snap-start sm:w-44 lg:w-auto">
               <ProductCard product={product} />

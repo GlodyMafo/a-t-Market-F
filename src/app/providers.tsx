@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 import { Toaster } from "sonner";
 import { ApiError } from "@/services/api/errors";
+import { SessionProvider } from "@/features/authentication/SessionProvider";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [client] = useState(
@@ -22,8 +23,9 @@ export function Providers({ children }: { children: ReactNode }) {
   );
   return (
     <QueryClientProvider client={client}>
-      {children}
+      <SessionProvider>{children}</SessionProvider>
       <Toaster position="top-center" richColors closeButton />
     </QueryClientProvider>
   );
 }
+

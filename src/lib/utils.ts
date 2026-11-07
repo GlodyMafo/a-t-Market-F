@@ -23,3 +23,16 @@ export function resolveImageUrl(url: string | null | undefined): string | null {
 export function normalizeText(value: string): string {
   return value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 }
+
+/** Chemin de redirection sûr : uniquement un chemin interne, jamais une adresse externe ni une page d'authentification. */
+export function safeNext(value: string | null | undefined, fallback = "/account"): string {
+  if (!value || !value.startsWith("/") || value.startsWith("//") || value.includes("\\")) return fallback;
+  if (value.startsWith("/login") || value.startsWith("/register")) return fallback;
+  return value;
+}
+
+export function formatDate(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  const date = new Date(iso);
+  return Number.isNaN(date.getTime()) ? "—" : date.toLocaleDateString("fr-FR", { dateStyle: "long" });
+}

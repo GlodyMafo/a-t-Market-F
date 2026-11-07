@@ -33,3 +33,8 @@ export async function listSubCategories(signal?: AbortSignal) {
   const { data } = await api.get<SubCategory[]>(endpoints.subCategories.list, { signal, auth: "none" });
   return data;
 }
+
+export async function getProduct(id: string, signal?: AbortSignal) {
+  const { data } = await api.get<Product>(endpoints.products.detail(id), { signal, auth: "none" });
+  return data;
+}
