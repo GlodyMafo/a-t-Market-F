@@ -14,6 +14,7 @@ export function CategoryBar() {
   const { data } = useCategories();
   const listRef = useRef<HTMLUListElement>(null);
   const [edges, setEdges] = useState({ left: false, right: false });
+  // L'ordre reste celui de l'utilité commerciale (vêtements en premier), mais toutes les catégories ont le même style.
   const items = useMemo(() => prioritizeCategories(data ?? []), [data]);
 
   const update = useCallback(() => {
@@ -64,19 +65,17 @@ export function CategoryBar() {
         </ul>
         <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-line" />
 
-        {/* Défilantes */}
+        {/* Défilantes : même style pour toutes les catégories */}
         <div className="relative min-w-0 flex-1">
           <ul ref={listRef} className="flex items-center overflow-x-auto [scrollbar-width:none]">
-            {items.map(({ item: category, featured }) => (
+            {items.map(({ item: category }) => (
               <li key={category.id} className="shrink-0">
                 <Link
                   href={`/products?categoryId=${encodeURIComponent(category.id)}`}
-                  className={cn(
-                    "flex min-h-11 items-center gap-1.5 whitespace-nowrap px-3 text-sm hover:text-brand-600",
-                    featured ? "font-semibold text-ink" : "font-medium text-ink/75",
-                  )}
+                  className="flex min-h-11 items-center gap-1.5 whitespace-nowrap px-3 text-sm font-medium text-ink hover:text-brand-600"
                 >
-                  {featured && createElement(iconForCategory(category.name), { className: "h-4 w-4 text-brand-500", "aria-hidden": true })}
+                  {/* Pour que l'icône prenne la même couleur que le texte, remplace "text-brand-500" par "text-current" */}
+                  {createElement(iconForCategory(category.name), { className: "h-4 w-4 text-brand-500", "aria-hidden": true })}
                   {category.name}
                 </Link>
               </li>

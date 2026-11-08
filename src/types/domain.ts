@@ -48,6 +48,7 @@ export interface QuotePreview {
   productUrl: string;
   productName: string;
   imageUrl: string | null;
+  imageUrls?: string[];
   currency: "USD";
   productPrice: Money;
   shippingCost: Money;
@@ -155,6 +156,13 @@ export interface UserQuote {
   status: QuoteStatus;
   expiresAt: IsoDate | null;
   createdAt: IsoDate;
+}
+
+export interface QuoteVariantOptions {
+  colors: Array<{ name: string; imageUrl: string | null }>;
+  sizes: Array<{ name: string; available: boolean }>;
+  /** Vrai si le prix de la source varie selon la variante : le devis est alors calculé sur la plus chère. */
+  priceVariesByVariant: boolean;
 }
 
 export type { CartItemIssue, QuoteStatus };

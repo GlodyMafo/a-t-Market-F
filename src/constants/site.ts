@@ -85,3 +85,15 @@ export const authCover: { src: string; mobileSrc: string; position: string; mobi
   position: "center",
   mobilePosition: "80% center",
 };
+
+/**
+ * Photos de la tuile « Nouveautés » de l'accueil.
+ * - Liste vide : la tuile affiche les photos des produits les plus récents (automatique).
+ * - Liste renseignée : la tuile affiche ces images à la place, dans cet ordre (5 maximum).
+ * Les fichiers se placent dans public/tiles/, et le chemin s'écrit sans « public » :
+ *   ["/tiles/nouveautes-1.webp", "/tiles/nouveautes-2.webp", "/tiles/nouveautes-3.webp"]
+ * Format conseillé : 1200 × 480 px, WebP, sujet dans le tiers droit.
+ */
+export const newArrivalsPhotos: ReadonlyArray<string> = ["/tiles/nouveautes-1.png", "/tiles/nouveautes-2.png", "/tiles/nouveautes-3.png" , "/tiles/nouveautes-4.png", "/tiles/nouveautes-5.png"];
+
+export const defaultLanguage = "fr";

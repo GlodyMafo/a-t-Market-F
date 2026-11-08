@@ -16,7 +16,7 @@ export function Header() {
 
   return (
     <header className="glass-bar sticky top-0 z-40">
-      {/* Mobile : logo + recherche + service client. Compte et panier sont dans la barre du bas. */}
+      {/* Mobile : logo + recherche + service client. Compte et panier sont dans la barre du bas, la langue dans la barre bleue du haut. */}
       <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-2 md:gap-4 md:py-3">
         <Logo compact />
 

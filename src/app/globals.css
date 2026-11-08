@@ -102,3 +102,55 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   dialog.sheet[open] { animation: sheet-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1); }
 }
+
+/* ---------- Animation « finance » : tuile Prix total livré ---------- */
+/* État de base = image finale figée (utilisée si l'utilisateur réduit les animations). */
+.fin-line { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.fin-area { opacity: 0.4; }
+.fin-ring { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.fin-dot { transform-box: fill-box; transform-origin: center; }
+.fin-bar { transform-box: fill-box; transform-origin: bottom; }
+.fin-total { background: var(--color-brand-300); transform-origin: left; }
+
+@keyframes fin-draw {
+  0% { stroke-dashoffset: 1; opacity: 1; }
+  40%, 90% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes fin-area {
+  0%, 25% { opacity: 0; }
+  45%, 90% { opacity: 0.4; }
+  100% { opacity: 0; }
+}
+@keyframes fin-dot {
+  0%, 38% { opacity: 0; transform: scale(0.3); }
+  44%, 90% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+@keyframes fin-ring {
+  0%, 38% { opacity: 0; transform: scale(1); }
+  40% { opacity: 0.6; transform: scale(1); }
+  52% { opacity: 0; transform: scale(3); }
+  54% { opacity: 0.6; transform: scale(1); }
+  66% { opacity: 0; transform: scale(3); }
+  100% { opacity: 0; transform: scale(1); }
+}
+@keyframes fin-bar {
+  0% { transform: scaleY(0); opacity: 1; }
+  25%, 90% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+@keyframes fin-total {
+  0%, 30% { transform: scaleX(0.2); opacity: 0.5; }
+  45%, 90% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fin-line { animation: fin-draw 7s ease-in-out infinite; }
+  .fin-area { animation: fin-area 7s ease-in-out infinite; }
+  .fin-dot { animation: fin-dot 7s ease-out infinite; }
+  .fin-ring { animation: fin-ring 7s ease-out infinite; }
+  .fin-bar { animation: fin-bar 7s cubic-bezier(0.2, 0.8, 0.2, 1) infinite; }
+  .fin-total { animation: fin-total 7s ease-in-out infinite; }
+}

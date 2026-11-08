@@ -12,22 +12,27 @@ interface Props {
 
 const navButton = "glass-dark absolute top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full motion-safe:active:scale-95";
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/** Miniatures par colonne du rail (desktop) : au-delà, le rail passe à 2 puis 3 colonnes pour que tout reste visible. */
+const RAIL_ROWS = 9;
 
+/** Bande horizontale : mobile, et plein écran. */
 function Thumbs({
   images,
   current,
   onSelect,
   listRef,
   small = false,
+  className,
 }: {
   images: string[];
   current: number;
   onSelect: (i: number) => void;
   listRef?: RefObject<HTMLUListElement | null>;
   small?: boolean;
+  className?: string;
 }) {
   return (
-    <ul ref={listRef} aria-label="Miniatures" className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
+    <ul ref={listRef} aria-label="Miniatures" className={cn("relative flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]", className)}>
       {images.map((src, i) => (
         <li key={src} className="shrink-0">
           <button
@@ -50,12 +55,53 @@ function Thumbs({
   );
 }
 
+/** Rail vertical (desktop) : toutes les photos visibles d'un coup d'œil. */
+function ThumbRail({
+  images,
+  current,
+  onSelect,
+  listRef,
+}: {
+  images: string[];
+  current: number;
+  onSelect: (i: number) => void;
+  listRef: RefObject<HTMLUListElement | null>;
+}) {
+  const columns = Math.min(3, Math.ceil(images.length / RAIL_ROWS));
+  return (
+    <ul
+      ref={listRef}
+      aria-label="Toutes les photos"
+      style={{ gridTemplateColumns: `repeat(${columns}, 3rem)` }}
+      className="relative hidden content-start gap-2 overflow-y-auto overscroll-contain [scrollbar-width:thin] lg:grid"
+    >
+      {images.map((src, i) => (
+        <li key={src}>
+          <button
+            type="button"
+            onClick={() => onSelect(i)}
+            aria-label={`Voir la photo ${i + 1} sur ${images.length}`}
+            aria-current={i === current}
+            className={cn(
+              "relative block h-12 w-12 overflow-hidden rounded-xl border-2 bg-white motion-safe:transition",
+              i === current ? "border-brand-500" : "border-transparent opacity-80 hover:border-line hover:opacity-100",
+            )}
+          >
+            <Image src={src} alt="" fill unoptimized referrerPolicy="no-referrer" sizes="48px" className="object-cover" />
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function QuoteGallery({ images, name }: Props) {
   const count = images.length;
   const [index, setIndex] = useState(0);
   const [zoom, setZoom] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const thumbsRef = useRef<HTMLUListElement>(null);
+  const stripRef = useRef<HTMLUListElement>(null);
+  const railRef = useRef<HTMLUListElement>(null);
   const touchX = useRef<number | null>(null);
   const firstRun = useRef(true);
 
@@ -69,16 +115,23 @@ export function QuoteGallery({ images, name }: Props) {
     if (!zoom && dialog.open) dialog.close();
   }, [zoom]);
 
-  // La miniature active reste visible, sans faire défiler la page.
+  // La miniature active reste visible dans son défilement, sans jamais faire défiler la page.
   useEffect(() => {
     if (firstRun.current) {
       firstRun.current = false;
       return;
     }
-    const list = thumbsRef.current;
-    const item = list?.children[current] as HTMLElement | undefined;
-    if (!list || !item) return;
-    list.scrollTo({ left: item.offsetLeft - (list.clientWidth - item.clientWidth) / 2, behavior: reducedMotion() ? "auto" : "smooth" });
+    const behavior = reducedMotion() ? "auto" : "smooth";
+    const strip = stripRef.current;
+    const stripItem = strip?.children[current] as HTMLElement | undefined;
+    if (strip && stripItem && strip.offsetParent !== null) {
+      strip.scrollTo({ left: stripItem.offsetLeft - (strip.clientWidth - stripItem.clientWidth) / 2, behavior });
+    }
+    const rail = railRef.current;
+    const railItem = rail?.children[current] as HTMLElement | undefined;
+    if (rail && railItem && rail.offsetParent !== null) {
+      rail.scrollTo({ top: railItem.offsetTop - (rail.clientHeight - railItem.clientHeight) / 2, behavior });
+    }
   }, [current]);
 
   const swipe = {
@@ -95,8 +148,8 @@ export function QuoteGallery({ images, name }: Props) {
 
   if (count === 0) {
     return (
-      <div className="p-3 md:p-4 lg:h-full">
-        <div className="flex h-28 items-center justify-center rounded-2xl bg-white text-sm text-muted lg:h-full lg:min-h-[24rem]">
+      <div className="p-3 md:p-4 lg:flex-1">
+        <div className="flex h-28 items-center justify-center rounded-2xl bg-white text-sm text-muted lg:h-full lg:min-h-[20rem]">
           Aucune photo disponible pour ce produit.
         </div>
       </div>
@@ -104,8 +157,9 @@ export function QuoteGallery({ images, name }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-2 p-3 md:p-4 lg:h-full">
-      <div className="relative lg:min-h-[20rem] lg:flex-1" {...swipe}>
+    <div className="flex min-h-0 flex-col gap-2 p-3 md:p-4 lg:flex-1 lg:flex-row-reverse lg:gap-3">
+      {/* Grande photo */}
+      <div className="relative lg:min-h-0 lg:min-w-0 lg:flex-1" {...swipe}>
         <button
           type="button"
           onClick={() => setZoom(true)}
@@ -119,7 +173,7 @@ export function QuoteGallery({ images, name }: Props) {
             unoptimized
             priority={current === 0}
             referrerPolicy="no-referrer"
-            sizes="(min-width: 1024px) 330px, 100vw"
+            sizes="(min-width: 1024px) 40vw, 100vw"
             className="object-contain p-2"
           />
         </button>
@@ -143,7 +197,13 @@ export function QuoteGallery({ images, name }: Props) {
         )}
       </div>
 
-      {count > 1 && <Thumbs images={images} current={current} onSelect={setIndex} listRef={thumbsRef} />}
+      {/* Miniatures : bande sur mobile, rail vertical sur desktop */}
+      {count > 1 && (
+        <>
+          <Thumbs images={images} current={current} onSelect={setIndex} listRef={stripRef} className="lg:hidden" />
+          <ThumbRail images={images} current={current} onSelect={setIndex} listRef={railRef} />
+        </>
+      )}
 
       {/* Visionneuse plein écran */}
       <dialog

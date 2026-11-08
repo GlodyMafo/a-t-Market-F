@@ -1,14 +1,12 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { heroSlides } from "@/constants/banners";
 import { cn } from "@/lib/utils";
 import { BannerCard } from "./BannerCard";
 
 const AUTOPLAY_MS = 5000;
-const arrow =
-  "glass-dark absolute top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full opacity-0 motion-safe:transition-opacity motion-safe:duration-300 group-hover:opacity-100 focus-visible:opacity-100 md:flex";
 
 export function HeroCarousel() {
   const [index, setIndex] = useState(0);
@@ -43,7 +41,7 @@ export function HeroCarousel() {
       role="region"
       aria-roledescription="carrousel"
       aria-label="Offres A&T Market"
-      className="group relative overflow-hidden rounded-2xl"
+      className="relative overflow-hidden rounded-2xl"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setFocused(true)}
@@ -102,13 +100,6 @@ export function HeroCarousel() {
           )}
         </div>
       )}
-
-      <button type="button" onClick={() => go(index - 1)} aria-label="Offre précédente" className={`${arrow} left-3`}>
-        <ChevronLeft className="h-5 w-5" aria-hidden />
-      </button>
-      <button type="button" onClick={() => go(index + 1)} aria-label="Offre suivante" className={`${arrow} right-3`}>
-        <ChevronRight className="h-5 w-5" aria-hidden />
-      </button>
     </div>
   );
 }

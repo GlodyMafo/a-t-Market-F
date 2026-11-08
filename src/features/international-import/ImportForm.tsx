@@ -7,15 +7,18 @@ import { toast } from "sonner";
 import { SubmitButton } from "@/components/forms/SubmitButton";
 import { TextField } from "@/components/forms/TextField";
 import { detectMarketplaceId, extractUrl, isHttpsUrl, safeHost } from "@/lib/marketplace";
+import { cn } from "@/lib/utils";
 import { IMPORT_MARKETPLACES } from "./marketplaces";
 import { importSchema, type ImportValues } from "./schemas";
 
 interface Props {
   onSubmit: (values: ImportValues) => void;
   pending: boolean;
+  /** Mode compact (desktop, résultat affiché) : on masque la phrase de réassurance pour gagner de la hauteur. */
+  compact?: boolean;
 }
 
-export function ImportForm({ onSubmit, pending }: Props) {
+export function ImportForm({ onSubmit, pending, compact = false }: Props) {
   const {
     register,
     handleSubmit,
@@ -42,46 +45,52 @@ export function ImportForm({ onSubmit, pending }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
-      <div>
-        <TextField
-          label="Lien du produit"
-          type="url"
-          inputMode="url"
-          autoComplete="off"
-          autoCapitalize="none"
-          spellCheck={false}
-          placeholder="Collez ici le lien SHEIN, NOON ou 1688"
-          error={errors.productUrl?.message}
-          suffixSpace="pr-28"
-          suffix={
-            <button
-              type="button"
-              onClick={paste}
-              aria-label="Coller le lien du presse-papiers"
-              className="flex h-9 items-center gap-1.5 rounded-full bg-brand-50 px-3 text-sm font-semibold text-brand-700 motion-safe:transition hover:bg-brand-100 motion-safe:active:scale-95"
-            >
-              <ClipboardPaste className="h-4 w-4" aria-hidden /> Coller
-            </button>
-          }
-          {...register("productUrl")}
-        />
-        {!errors.productUrl && detectedName && (
-          <p role="status" className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-sm font-semibold text-green-700">
-            <Check className="h-4 w-4" aria-hidden /> {detectedName} reconnu
-          </p>
-        )}
-        {!errors.productUrl && unknownShop && (
-          <p role="status" className="mt-2 flex items-start gap-2 rounded-xl bg-amber-50 p-3 text-sm text-amber-900">
-            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> Boutique non reconnue : SHEIN, NOON et 1688 uniquement.
-          </p>
-        )}
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <div className="lg:flex lg:items-start lg:gap-3">
+        <div className="min-w-0 lg:flex-1">
+          <TextField
+            label="Lien du produit"
+            labelClassName="lg:sr-only"
+            type="url"
+            inputMode="url"
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            placeholder="Collez ici le lien SHEIN, NOON ou 1688"
+            error={errors.productUrl?.message}
+            suffixSpace="pr-28"
+            suffix={
+              <button
+                type="button"
+                onClick={paste}
+                aria-label="Coller le lien du presse-papiers"
+                className="flex h-9 items-center gap-1.5 rounded-full bg-brand-50 px-3 text-sm font-semibold text-brand-700 motion-safe:transition hover:bg-brand-100 motion-safe:active:scale-95"
+              >
+                <ClipboardPaste className="h-4 w-4" aria-hidden /> Coller
+              </button>
+            }
+            {...register("productUrl")}
+          />
+          {!errors.productUrl && detectedName && (
+            <p role="status" className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-sm font-semibold text-green-700">
+              <Check className="h-4 w-4" aria-hidden /> {detectedName} reconnu
+            </p>
+          )}
+          {!errors.productUrl && unknownShop && (
+            <p role="status" className="mt-2 flex items-start gap-2 rounded-xl bg-amber-50 p-3 text-sm text-amber-900">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> Boutique non reconnue : SHEIN, NOON et 1688 uniquement.
+            </p>
+          )}
+        </div>
+
+        <div className="mt-4 lg:mt-0 lg:w-64 lg:shrink-0">
+          <SubmitButton loading={pending}>Voir le prix total livré</SubmitButton>
+        </div>
       </div>
 
-      <div className="space-y-2">
-        <SubmitButton loading={pending}>Voir le prix total livré</SubmitButton>
-        <p className="text-center text-xs text-muted">Vous obtenez le prix avant de commander. Aucun compte n&apos;est nécessaire.</p>
-      </div>
+      <p className={cn("mt-3 text-center text-xs text-muted lg:text-left", compact && "lg:hidden")}>
+        Vous obtenez le prix avant de commander. Aucun compte n&apos;est nécessaire.
+      </p>
     </form>
   );
 }

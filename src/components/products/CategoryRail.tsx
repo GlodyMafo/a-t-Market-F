@@ -57,7 +57,7 @@ export function CategoryRail({ state, onChange }: Props) {
             Tout
           </button>
         </li>
-        {items.map(({ item: category, featured }) => {
+        {items.map(({ item: category }) => {
           const active = state.categoryId === category.id;
           return (
             <li key={category.id} className="shrink-0">
@@ -67,7 +67,7 @@ export function CategoryRail({ state, onChange }: Props) {
                 onClick={() => onChange({ categoryId: category.id, subCategoryId: "" })}
                 className={chip(active)}
               >
-                {featured && createElement(iconForCategory(category.name), { className: "h-4 w-4", "aria-hidden": true })}
+                {createElement(iconForCategory(category.name), { className: "h-4 w-4", "aria-hidden": true })}
                 {category.name}
               </button>
             </li>
