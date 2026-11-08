@@ -11,7 +11,10 @@ interface Props {
 }
 
 const optionClass = (active: boolean) =>
-  cn("block w-full rounded-lg px-3 py-2 text-left text-sm", active ? "bg-brand-50 font-semibold text-brand-700" : "hover:bg-surface");
+  cn(
+    "flex min-h-11 w-full items-center rounded-xl px-3 py-2 text-left text-sm motion-safe:transition-colors lg:min-h-10",
+    active ? "bg-brand-50 font-semibold text-brand-700 shadow-[inset_3px_0_0_var(--color-brand-500)]" : "hover:bg-surface",
+  );
 
 function PriceFilter({
   initialMin,
@@ -42,7 +45,8 @@ function PriceFilter({
     onApply(min, max);
   }
 
-  const inputClass = "h-10 w-full rounded-lg border border-line px-3 text-sm outline-none focus:border-brand-500";
+  const inputClass =
+    "h-11 w-full rounded-xl border border-line bg-white px-3 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20";
 
   return (
     <form onSubmit={submit} className="space-y-2">
@@ -54,7 +58,10 @@ function PriceFilter({
         <input id="price-max" type="number" inputMode="decimal" min={0} step="any" placeholder="Max" value={max} onChange={(e) => setMax(e.target.value)} className={inputClass} />
       </div>
       {error && <p role="alert" className="text-xs text-sale">{error}</p>}
-      <button type="submit" className="h-10 w-full rounded-lg border border-brand-500 text-sm font-semibold text-brand-600 hover:bg-brand-50">
+      <button
+        type="submit"
+        className="h-11 w-full rounded-full border border-brand-500 text-sm font-semibold text-brand-600 motion-safe:transition-colors hover:bg-brand-50 motion-safe:active:scale-[0.99]"
+      >
         Appliquer (en $)
       </button>
     </form>
@@ -73,10 +80,10 @@ export function FilterPanel({ state, onChange }: Props) {
   return (
     <div className="space-y-6">
       <section aria-labelledby="filter-categories">
-        <h2 id="filter-categories" className="mb-2 text-sm font-bold">Catégories</h2>
+        <h2 id="filter-categories" className="mb-2 px-1 font-display text-sm font-extrabold tracking-tight">Catégories</h2>
         <ul className="space-y-0.5">
           <li>
-            <button type="button" onClick={() => onChange({ categoryId: "", subCategoryId: "" })} className={optionClass(!state.categoryId)}>
+            <button type="button" onClick={() => onChange({ categoryId: "", subCategoryId: "" })} aria-pressed={!state.categoryId} className={optionClass(!state.categoryId)}>
               Toutes les catégories
             </button>
           </li>
@@ -112,7 +119,7 @@ export function FilterPanel({ state, onChange }: Props) {
       </section>
 
       <section aria-labelledby="filter-price">
-        <h2 id="filter-price" className="mb-2 text-sm font-bold">Prix</h2>
+        <h2 id="filter-price" className="mb-2 px-1 font-display text-sm font-extrabold tracking-tight">Prix</h2>
         <PriceFilter
           key={`${state.minPrice}-${state.maxPrice}`}
           initialMin={state.minPrice}

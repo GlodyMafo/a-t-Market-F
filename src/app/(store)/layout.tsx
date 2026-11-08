@@ -7,7 +7,7 @@ import { CategoryBar } from "@/components/navigation/CategoryBar";
 
 export default function StoreLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-dvh flex-col pb-16 md:pb-0">
+    <div className="flex min-h-dvh flex-col pb-28 md:pb-0">
       <TopBar />
       <Header />
       <CategoryBar />

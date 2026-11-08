@@ -6,7 +6,8 @@ export function SubmitButton({ loading, children }: { loading: boolean; children
     <button
       type="submit"
       disabled={loading}
-      className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-brand-500 text-sm font-semibold text-white hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+      aria-busy={loading}
+      className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-brand-500 text-sm font-semibold text-white motion-safe:transition hover:bg-brand-600 motion-safe:active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
     >
       {loading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
       {children}

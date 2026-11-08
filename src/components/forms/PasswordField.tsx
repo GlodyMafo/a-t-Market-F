@@ -12,12 +12,14 @@ export function PasswordField(props: Props) {
     <TextField
       {...props}
       type={visible ? "text" : "password"}
+      suffixSpace="pr-14"
       suffix={
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? "Masquer le mot de passe" : "Afficher le mot de passe"}
-          className="rounded-md p-2 text-muted hover:text-ink"
+          aria-pressed={visible}
+          className="flex h-11 w-11 items-center justify-center rounded-full text-muted motion-safe:transition-colors hover:bg-surface hover:text-ink motion-safe:active:scale-95"
         >
           {visible ? <EyeOff className="h-4 w-4" aria-hidden /> : <Eye className="h-4 w-4" aria-hidden />}
         </button>

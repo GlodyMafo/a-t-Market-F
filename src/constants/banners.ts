@@ -12,6 +12,10 @@ export interface Banner {
   icon: LucideIcon;
   /** Photo optionnelle : déposez le fichier dans public/banners puis renseignez par exemple "/banners/hero-1.jpg". */
   image?: string;
+  /** Couleur du texte posé sur la photo (desktop) : "dark" = fond sombre, texte blanc. Défaut : "dark". */
+  tone?: "light" | "dark";
+  /** Cadrage de la photo sur mobile (object-position), pour garder le sujet visible. */
+  mobilePosition?: string;
 }
 
 export const heroSlides: Banner[] = [
@@ -24,6 +28,8 @@ export const heroSlides: Banner[] = [
     theme: "brand",
     icon: Globe,
     image: "/banners/banner2.png",
+    tone: "dark",
+    mobilePosition: "88% 50%",
   },
   {
     id: "local",
@@ -34,6 +40,8 @@ export const heroSlides: Banner[] = [
     theme: "dark",
     icon: Store,
     image: "/banners/banner3.png",
+    tone: "dark",
+    mobilePosition: "100% 50%",
   },
   {
     id: "mobile-money",
@@ -43,10 +51,13 @@ export const heroSlides: Banner[] = [
     href: "/import",
     theme: "light",
     icon: Smartphone,
-     image: "/banners/banner4.png",
+    image: "/banners/banner4.png",
+    tone: "light",
+    mobilePosition: "100% 50%",
   },
 ];
 
+/** Conservé : sert de contenu de repli aux tuiles latérales si l'API ne renvoie rien. */
 export const sideTiles: Banner[] = [
   {
     id: "new",

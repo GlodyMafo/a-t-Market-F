@@ -14,9 +14,7 @@ export default function AccountPage() {
       <VerifyEmailBanner />
       <AccountTiles />
       <MenuRows />
-      <div className="hidden md:block">
-        <ProfileCard />
-      </div>
+      <ProfileCard />
     </div>
   );
 }

@@ -1,13 +1,17 @@
+/** Accueil et sections : pas de sidebar, jusqu'à 5 colonnes. */
 export const PRODUCT_GRID_CLASS = "grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-5";
 
-export function ProductGridSkeleton({ count = 10 }: { count?: number }) {
+/** Catalogue : la sidebar de 240 px prend de la place, donc 3 colonnes jusqu'à xl puis 4 (cartes d'environ 230 px). */
+export const CATALOG_GRID_CLASS = "grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 xl:grid-cols-4";
+
+export function ProductGridSkeleton({ count = 10, className = PRODUCT_GRID_CLASS }: { count?: number; className?: string }) {
   return (
-    <div className={PRODUCT_GRID_CLASS} aria-busy="true" aria-label="Chargement des produits">
+    <div className={className} aria-busy="true" aria-label="Chargement des produits">
       {Array.from({ length: count }, (_, i) => (
-        <div key={i} className="animate-pulse">
-          <div className="aspect-square rounded-lg bg-surface" />
-          <div className="mt-2 h-3 w-4/5 rounded bg-surface" />
-          <div className="mt-2 h-4 w-1/3 rounded bg-surface" />
+        <div key={i}>
+          <div className="skeleton aspect-square rounded-xl" />
+          <div className="skeleton mt-2 h-3 w-4/5 rounded" />
+          <div className="skeleton mt-2 h-4 w-1/3 rounded" />
         </div>
       ))}
     </div>

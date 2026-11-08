@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { FormAlert } from "@/components/forms/FormAlert";
 import { PasswordField } from "@/components/forms/PasswordField";
 import { SubmitButton } from "@/components/forms/SubmitButton";
 import { TextField } from "@/components/forms/TextField";
@@ -49,11 +50,7 @@ export function RegisterForm() {
       noValidate
       className="space-y-4"
     >
-      {mutation.error && (
-        <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-sale">
-          {errorMessage(mutation.error)}
-        </div>
-      )}
+      {mutation.error && <FormAlert>{errorMessage(mutation.error)}</FormAlert>}
       <TextField label="Adresse e-mail" type="email" autoComplete="email" error={errors.email?.message} {...register("email")} />
       <TextField
         label="Téléphone"
@@ -81,7 +78,7 @@ export function RegisterForm() {
       <SubmitButton loading={mutation.isPending}>Créer mon compte</SubmitButton>
       <p className="text-center text-sm text-muted">
         Déjà un compte ?{" "}
-        <Link href={loginHref} className="font-semibold text-brand-600 hover:underline">
+        <Link href={loginHref} className="inline-flex min-h-11 items-center font-semibold text-brand-600 hover:underline">
           Se connecter
         </Link>
       </p>

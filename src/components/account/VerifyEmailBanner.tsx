@@ -19,9 +19,11 @@ export function VerifyEmailBanner() {
   if (!user || user.emailVerifiedAt !== null) return null;
 
   return (
-    <div role="status" className="flex flex-col gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div role="status" className="flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-start gap-3">
-        <MailWarning className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" aria-hidden />
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
+          <MailWarning className="h-5 w-5" aria-hidden />
+        </span>
         <div className="text-sm">
           <p className="font-semibold text-amber-900">Confirmez votre adresse e-mail</p>
           <p className="text-amber-800">Un lien vous a été envoyé à {user.email}. Il est valable 24 heures.</p>
@@ -31,7 +33,7 @@ export function VerifyEmailBanner() {
         type="button"
         onClick={() => mutation.mutate()}
         disabled={mutation.isPending}
-        className="h-10 shrink-0 rounded-lg bg-amber-700 px-4 text-sm font-semibold text-white hover:bg-amber-800 disabled:opacity-60"
+        className="min-h-11 shrink-0 rounded-full bg-amber-700 px-5 text-sm font-semibold text-white motion-safe:transition hover:bg-amber-800 motion-safe:active:scale-95 disabled:opacity-60"
       >
         {mutation.isPending ? "Envoi…" : "Renvoyer l'e-mail"}
       </button>

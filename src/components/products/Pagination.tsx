@@ -20,30 +20,40 @@ export function Pagination({ page, totalPages, onChange }: Props) {
     items.push(p);
   });
 
-  const base = "flex h-10 min-w-10 items-center justify-center rounded-lg border border-line px-3 text-sm";
+  const base =
+    "flex h-11 min-w-11 items-center justify-center rounded-full border border-line bg-white px-3 text-sm font-medium motion-safe:transition-colors motion-safe:active:scale-95";
 
   return (
-    <nav aria-label="Pagination" className="mt-8 flex items-center justify-center gap-1.5">
+    <nav aria-label="Pagination" className="mt-10 flex items-center justify-center gap-1.5">
       <button type="button" disabled={page <= 1} onClick={() => onChange(page - 1)} aria-label="Page précédente" className={cn(base, "disabled:opacity-40")}>
         <ChevronLeft className="h-4 w-4" aria-hidden />
       </button>
-      {items.map((item, i) =>
-        item === "gap" ? (
-          <span key={`gap-${i}`} className="px-1 text-muted" aria-hidden>
-            …
-          </span>
-        ) : (
-          <button
-            key={item}
-            type="button"
-            onClick={() => onChange(item)}
-            aria-current={item === page ? "page" : undefined}
-            className={cn(base, item === page ? "border-brand-500 bg-brand-500 font-semibold text-white" : "hover:bg-surface")}
-          >
-            {item}
-          </button>
-        ),
-      )}
+
+      {/* Mobile : texte compact. Desktop : numéros de page. */}
+      <p className="px-3 text-sm font-medium sm:hidden">
+        Page {page} sur {totalPages}
+      </p>
+      <div className="hidden items-center gap-1.5 sm:flex">
+        {items.map((item, i) =>
+          item === "gap" ? (
+            <span key={`gap-${i}`} className="px-1 text-muted" aria-hidden>
+              …
+            </span>
+          ) : (
+            <button
+              key={item}
+              type="button"
+              onClick={() => onChange(item)}
+              aria-current={item === page ? "page" : undefined}
+              aria-label={`Page ${item}`}
+              className={cn(base, item === page ? "border-brand-500 bg-brand-500 font-semibold text-white" : "hover:bg-surface")}
+            >
+              {item}
+            </button>
+          ),
+        )}
+      </div>
+
       <button type="button" disabled={page >= totalPages} onClick={() => onChange(page + 1)} aria-label="Page suivante" className={cn(base, "disabled:opacity-40")}>
         <ChevronRight className="h-4 w-4" aria-hidden />
       </button>

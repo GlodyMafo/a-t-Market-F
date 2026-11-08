@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Globe, ShoppingCart, User } from "lucide-react";
 import { SearchBox } from "@/components/layout/SearchBox";
+import { SupportMenu } from "@/components/layout/SupportMenu";
 import { Logo } from "@/components/ui/Logo";
 import { useCartCount } from "@/features/cart/useCartCount";
 import { useSession } from "@/features/authentication/session.store";
@@ -14,17 +15,21 @@ export function Header() {
   const authenticated = status === "authenticated";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2 md:flex-nowrap md:py-3">
-        <div className="order-1">
-          <Logo />
+    <header className="glass-bar sticky top-0 z-40">
+      {/* Mobile : logo + recherche + service client. Compte et panier sont dans la barre du bas. */}
+      <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-2 md:gap-4 md:py-3">
+        <Logo compact />
+
+        <div className="min-w-0 flex-1 md:max-w-2xl">
+          <SearchBox />
         </div>
 
-        <nav aria-label="Compte et panier" className="order-2 ml-auto flex items-center gap-1 md:order-3">
-          <Link href="/import" className="mr-2 hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-brand-600 hover:bg-brand-50 md:flex">
+        <SupportMenu className="md:hidden" />
+
+        <nav aria-label="Compte et panier" className="ml-auto hidden items-center gap-1 md:flex">
+          <Link href="/import" className="mr-2 flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-brand-600 hover:bg-brand-50">
             <Globe className="h-4 w-4" aria-hidden /> Importer
           </Link>
-
 
           <Link
             href={authenticated ? "/account" : "/login"}
@@ -34,6 +39,7 @@ export function Header() {
             <User className={cn("h-5 w-5", authenticated && "text-brand-500")} aria-hidden />
           </Link>
 
+          <SupportMenu />
 
           <Link href="/cart" aria-label="Panier" className="relative rounded-full p-2.5 hover:bg-surface">
             <ShoppingCart className="h-5 w-5" aria-hidden />
@@ -44,10 +50,6 @@ export function Header() {
             )}
           </Link>
         </nav>
-
-        <div className="order-3 w-full md:order-2 md:max-w-2xl md:flex-1">
-          <SearchBox />
-        </div>
       </div>
     </header>
   );

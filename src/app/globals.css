@@ -16,6 +16,7 @@
   --color-line: #e6e8ec;
   --color-surface: #f6f7f9;
   --color-sale: #d92d20;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
@@ -23,4 +24,81 @@ body {
   color: var(--color-ink);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Liquid Glass : usage sélectif (header, barre mobile, contrôles, badges) ---------- */
+@layer components {
+  /* Repli opaque : appliqué si le navigateur ne sait pas flouter */
+  .glass { background: rgb(255 255 255 / 0.94); border: 1px solid rgb(255 255 255 / 0.7); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), 0 10px 30px -12px rgb(15 17 21 / 0.25); }
+  .glass-strong { background: rgb(255 255 255 / 0.96); border: 1px solid rgb(255 255 255 / 0.7); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), 0 12px 32px -10px rgb(15 17 21 / 0.3); }
+  .glass-bar { background: rgb(255 255 255 / 0.96); border-bottom: 1px solid var(--color-line); }
+  .glass-dark { background: rgb(15 17 21 / 0.6); border: 1px solid rgb(255 255 255 / 0.22); color: #fff; }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .glass { background: rgb(255 255 255 / 0.72); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%); }
+    .glass-strong { background: rgb(255 255 255 / 0.86); -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%); }
+    .glass-bar { background: rgb(255 255 255 / 0.82); -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%); }
+    .glass-dark { background: rgb(15 17 21 / 0.42); -webkit-backdrop-filter: blur(14px) saturate(160%); backdrop-filter: blur(14px) saturate(160%); }
+  }
+
+  /* Panneau de texte des bannières : verre sur mobile uniquement, transparent dès md */
+  @media (max-width: 767.98px) {
+    .glass-sheet { background: rgb(255 255 255 / 0.94); border: 1px solid rgb(255 255 255 / 0.7); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), 0 10px 30px -12px rgb(15 17 21 / 0.35); }
+    @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+      .glass-sheet { background: rgb(255 255 255 / 0.78); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); }
+    }
+  }
+
+  /* Préférence système : moins de transparence */
+  @media (prefers-reduced-transparency: reduce) {
+    .glass, .glass-strong, .glass-bar, .glass-sheet { background: rgb(255 255 255 / 0.98); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .glass-dark { background: rgb(15 17 21 / 0.78); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    @keyframes reveal-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: none; }
+    }
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 220px;
+    }
+  }
+}
+
+/* ---------- Catalogue : hauteur du header (barres collantes) ---------- */
+/* Valeurs mesurées d'après le code du header : mobile 60 px + 1 px de filet, desktop 72 px + 1 px.
+   Si tu modifies la hauteur du header ou de la recherche, ajuste ces deux valeurs. */
+:root { --header-h: 61px; }
+@media (min-width: 768px) { :root { --header-h: 73px; } }
+
+/* ---------- Skeleton avec brillance (désactivée si l'utilisateur réduit les animations) ---------- */
+@keyframes shimmer { to { transform: translateX(100%); } }
+
+@layer components {
+  .skeleton { position: relative; overflow: hidden; background: var(--color-surface); }
+  @media (prefers-reduced-motion: no-preference) {
+    .skeleton::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.75), transparent);
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+  }
+}
+
+/* ---------- Feuille du bas (tiroir de filtres) ---------- */
+@keyframes sheet-in {
+  from { transform: translateY(28px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  dialog.sheet[open] { animation: sheet-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1); }
 }

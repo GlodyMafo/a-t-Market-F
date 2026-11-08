@@ -1,6 +1,12 @@
 import type { MarketplaceId } from "@/lib/marketplace";
 
-export const IMPORT_MARKETPLACES: ReadonlyArray<{ id: MarketplaceId; name: string; tip: string }> = [
+export const IMPORT_MARKETPLACES: ReadonlyArray<{
+  id: MarketplaceId;
+  name: string;
+  tip: string;
+  /** Logo facultatif (SVG dans public/marketplaces/). Sans fichier, le nom de la boutique est affiché. Exemple : "/marketplaces/shein.svg". */
+  logo?: string;
+}> = [
   { id: "shein", name: "SHEIN", tip: "Ouvrez la fiche du produit, puis copiez son lien (bouton Partager ou barre d'adresse)." },
   { id: "noon", name: "NOON", tip: "Ouvrez la fiche du produit, puis copiez son lien (bouton Partager ou barre d'adresse)." },
   { id: "1688", name: "1688", tip: "Utilisez le lien d'une fiche produit, de la forme detail.1688.com/offer/….html" },

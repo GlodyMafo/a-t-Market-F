@@ -7,7 +7,7 @@ export async function listMyQuotes(signal?: AbortSignal) {
   return data;
 }
 
-export type PreviewInput = { productUrl: string; subCategoryId: string };
+export type PreviewInput = { productUrl: string };
 
 /** L'extraction chez la boutique peut être longue : délai d'attente de 90 secondes. */
 export async function previewQuote(input: PreviewInput, signal?: AbortSignal) {
