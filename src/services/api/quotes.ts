@@ -1,4 +1,4 @@
-import type { QuotePreviewResult, UserQuote } from "@/types/domain";
+import type { QuotePreviewResult, UserQuote, QuotePriceBreakdown } from "@/types/domain";
 import { api } from "./client";
 import { endpoints } from "./endpoints";
 
@@ -16,5 +16,10 @@ export async function previewQuote(input: PreviewInput, signal?: AbortSignal) {
     signal,
     timeoutMs: 90_000,
   });
+  return data;
+}
+
+export async function priceQuote(input: { ticket: string; variantSku?: string; quantity: number }, signal?: AbortSignal) {
+  const { data } = await api.post<QuotePriceBreakdown>(endpoints.quotes.price, input, { auth: "none", signal });
   return data;
 }

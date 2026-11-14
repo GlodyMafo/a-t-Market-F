@@ -8,6 +8,7 @@ import { Logo } from "@/components/ui/Logo";
 import { useCartCount } from "@/features/cart/useCartCount";
 import { useSession } from "@/features/authentication/session.store";
 import { cn } from "@/lib/utils";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 
 export function Header() {
   const cartCount = useCartCount();
@@ -40,6 +41,8 @@ export function Header() {
           </Link>
 
           <SupportMenu />
+
+          <NotificationBell />
 
           <Link href="/cart" aria-label="Panier" className="relative rounded-full p-2.5 hover:bg-surface">
             <ShoppingCart className="h-5 w-5" aria-hidden />

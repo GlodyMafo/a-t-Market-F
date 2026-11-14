@@ -15,6 +15,7 @@ import { localDeliveryNote, supportInfo } from "@/constants/site";
 import { useProduct } from "@/features/products/hooks";
 import { cn, formatUsd } from "@/lib/utils";
 import { ApiError, errorMessage } from "@/services/api/errors";
+import { useCartActions } from "@/features/cart/useCartActions";
 
 const DESCRIPTION_LIMIT = 300;
 
@@ -56,6 +57,7 @@ export function ProductDetail({ id }: { id: string }) {
   const router = useRouter();
   const { data: product, isLoading, error, refetch } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
+  const { addLocal } = useCartActions();
 
   if (isLoading) return <DetailSkeleton />;
 
@@ -150,7 +152,7 @@ export function ProductDetail({ id }: { id: string }) {
                     <p className="text-sm font-medium">Quantité</p>
                     <QuantitySelector value={quantity} max={stock} onChange={setQuantity} disabled={soldOut} />
                   </div>
-                  <AddToCartButton soldOut={soldOut} />
+                  <AddToCartButton soldOut={soldOut} onAdd={() => addLocal(product, quantity)} />
                   {localDeliveryNote && (
                     <p className="flex items-start gap-2 border-t border-line pt-3 text-sm text-muted">
                       <Truck className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" aria-hidden /> {localDeliveryNote}

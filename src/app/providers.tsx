@@ -5,6 +5,8 @@ import { useState, type ReactNode } from "react";
 import { Toaster } from "sonner";
 import { ApiError } from "@/services/api/errors";
 import { SessionProvider } from "@/features/authentication/SessionProvider";
+import { CartSync } from "@/features/cart/CartSync";
+import { RealtimeProvider } from "@/features/realtime/RealtimeProvider";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [client] = useState(
@@ -23,7 +25,7 @@ export function Providers({ children }: { children: ReactNode }) {
   );
   return (
     <QueryClientProvider client={client}>
-      <SessionProvider>{children}</SessionProvider>
+      <SessionProvider> <CartSync /> <RealtimeProvider /> {children}</SessionProvider>
       <Toaster position="top-center" richColors closeButton />
     </QueryClientProvider>
   );

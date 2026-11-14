@@ -27,7 +27,7 @@ export const endpoints = {
     quotes: "/api/cart/quotes",
     merge: "/api/cart/merge",
   },
-  quotes: { preview: "/api/international-quotes/preview", create: "/api/international-quotes", mine: "/api/international-quotes/user" },
+  quotes: { preview: "/api/international-quotes/preview", create: "/api/international-quotes", mine: "/api/international-quotes/user", price: "/api/international-quotes/price" },
   orders: { create: "/api/orders", mine: "/api/orders/me", detail: (oid: string) => `/api/orders/${id(oid)}` },
   payments: { create: "/api/payments" },
   tracking: { byOrder: (oid: string) => `/api/tracking/order/${id(oid)}` },

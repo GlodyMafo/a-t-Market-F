@@ -56,7 +56,12 @@ export interface QuotePreview {
   commissionCost: Money;
   fixedFee: Money;
   totalPrice: Money;
+  variantOptions?: QuoteVariantOptions;
+  minOrderQuantity?: number | null; 
+  maxTotalPrice?: Money | null;
   isProvisional: boolean;
+  details?: QuoteProductDetails; 
+  stockLimit?: number | null;
   weightKg: Money | null;
   weightSource: "EXTRACTED" | "CATALOG_ESTIMATE" | null;
   status: "AUTO_APPROVED" | "PENDING_REVIEW";
@@ -158,11 +163,41 @@ export interface UserQuote {
   createdAt: IsoDate;
 }
 
+export interface QuoteVariantGroup {
+  name: string;
+  values: Array<{ value: string; imageUrl: string | null; available: boolean }>;
+  selectsVariant?: boolean;
+}
+
+export interface QuoteVariant {
+  sku: string;
+  selection: Record<string, string>;
+  available: boolean;
+  imageUrl: string | null;
+}
+
 export interface QuoteVariantOptions {
-  colors: Array<{ name: string; imageUrl: string | null }>;
-  sizes: Array<{ name: string; available: boolean }>;
-  /** Vrai si le prix de la source varie selon la variante : le devis est alors calculé sur la plus chère. */
-  priceVariesByVariant: boolean;
+  groups: QuoteVariantGroup[];
+  variants: QuoteVariant[];
+  /** Vrai si les prix diffèrent selon la variante : le choix est alors obligatoire. */
+  required: boolean;
+}
+
+export interface QuotePriceBreakdown {
+  currency: "USD";
+  quantity: number;
+  productPrice: Money;
+  shippingCost: Money;
+  customsCost: Money;
+  commissionCost: Money;
+  fixedFee: Money;
+  totalPrice: Money;
+  isProvisional: boolean;
+}
+
+export interface QuoteProductDetails {
+  specs: Array<{ name: string; value: string }>;
+  highlights: string[];
 }
 
 export type { CartItemIssue, QuoteStatus };
