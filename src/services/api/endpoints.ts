@@ -1,7 +1,11 @@
 const id = encodeURIComponent;
 
 export const endpoints = {
-  health: { live: "/health", ready: "/health/ready" },
+  health: {
+    live: "/health",
+    ready: "/health/ready",
+  },
+
   auth: {
     register: "/auth/register",
     login: "/auth/login",
@@ -12,14 +16,30 @@ export const endpoints = {
     resetPassword: "/auth/reset-password",
     changePassword: "/auth/password",
   },
+
   users: {
     me: "/api/users/me",
     addresses: "/api/users/me/addresses",
     address: (aid: string) => `/api/users/me/addresses/${id(aid)}`,
   },
-  products: { list: "/api/products", detail: (pid: string) => `/api/products/${id(pid)}` },
-  categories: { list: "/api/categories", detail: (cid: string) => `/api/categories/${id(cid)}` },
-  subCategories: { list: "/api/subcategories", detail: (sid: string) => `/api/subcategories/${id(sid)}` },
+
+  products: {
+    list: "/api/products",
+    detail: (pid: string) => `/api/products/${id(pid)}`,
+  },
+
+  categories: {
+    list: "/api/categories",
+    detail: (cid: string) => `/api/categories/${id(cid)}`,
+    active: (cid: string) => `/api/categories/${id(cid)}/active`,
+  },
+
+  subCategories: {
+    list: "/api/subcategories",
+    detail: (sid: string) => `/api/subcategories/${id(sid)}`,
+    active: (sid: string) => `/api/subcategories/${id(sid)}/active`,
+  },
+
   cart: {
     me: "/api/cart/me",
     add: "/api/cart",
@@ -27,16 +47,35 @@ export const endpoints = {
     quotes: "/api/cart/quotes",
     merge: "/api/cart/merge",
   },
-  quotes: { preview: "/api/international-quotes/preview", create: "/api/international-quotes", mine: "/api/international-quotes/user", price: "/api/international-quotes/price" },
-  orders: { create: "/api/orders", mine: "/api/orders/me", detail: (oid: string) => `/api/orders/${id(oid)}` },
-  payments: { create: "/api/payments" },
-  tracking: { byOrder: (oid: string) => `/api/tracking/order/${id(oid)}` },
+
+  quotes: {
+    preview: "/api/international-quotes/preview",
+    create: "/api/international-quotes",
+    mine: "/api/international-quotes/user",
+    price: "/api/international-quotes/price",
+  },
+
+  orders: {
+    create: "/api/orders",
+    mine: "/api/orders/me",
+    detail: (oid: string) => `/api/orders/${id(oid)}`,
+  },
+
+  payments: {
+    create: "/api/payments",
+  },
+
+  tracking: {
+    byOrder: (oid: string) => `/api/tracking/order/${id(oid)}`,
+  },
+
   notifications: {
     list: "/api/notifications",
     detail: (nid: string) => `/api/notifications/${id(nid)}`,
     read: (nid: string) => `/api/notifications/${id(nid)}/read`,
     readAll: "/api/notifications/read-all",
   },
+
   admin: {
     dashboard: "/api/admin/dashboard",
     toPurchase: "/api/admin/dashboard/to-purchase",
@@ -57,5 +96,8 @@ export const endpoints = {
     quoteReject: (qid: string) => `/api/admin/quotes/reject/${id(qid)}`,
     quoteHistory: (qid: string) => `/api/admin/quotes/${id(qid)}/history`,
     weightCatalog: "/api/weight-catalog",
+    uploads: "/api/admin/uploads",
+    inventoryMovements: (pid: string) =>
+      `/api/admin/inventory/${id(pid)}/movements`,
   },
 } as const;

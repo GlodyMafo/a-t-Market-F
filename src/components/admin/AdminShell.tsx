@@ -9,6 +9,7 @@ import {
   ReceiptText,
   ShoppingBag,
   Store,
+  Boxes, Package, Settings, Tags,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -31,12 +32,15 @@ interface NavItem {
   badge?: keyof AdminDashboard;
 }
 
-// D'autres entrées (produits, stock, catégories, réglages) s'ajoutent ici dans la Partie B.
 const NAV: NavItem[] = [
   { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
   { href: "/admin/orders", label: "Commandes", icon: ReceiptText },
   { href: "/admin/purchases", label: "À acheter", icon: ShoppingBag, badge: "internationalToPurchase" },
   { href: "/admin/quotes", label: "Devis à valider", icon: FileCheck2, badge: "quotesPendingReview" },
+  { href: "/admin/products", label: "Produits", icon: Package },
+  { href: "/admin/stock", label: "Stock", icon: Boxes, badge: "outOfStockProducts" },
+  { href: "/admin/categories", label: "Catégories", icon: Tags },
+  { href: "/admin/settings", label: "Réglages", icon: Settings },
   { href: "/admin/notifications", label: "Notifications", icon: Bell },
 ];
 

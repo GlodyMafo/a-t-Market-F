@@ -7,7 +7,10 @@ import {
   ChevronRight,
   FileText,
   LogOut,
+  MapPin,
   Package,
+  ShieldCheck,
+  UserRound,
 } from "lucide-react";
 import Link from "next/link";
 import { useLogout } from "@/features/authentication/useLogout";
@@ -37,6 +40,21 @@ export function MenuRows() {
       label: "Mes devis",
       icon: FileText,
       count: data?.length,
+    },
+    {
+      href: "/account/profile",
+      label: "Mon profil",
+      icon: UserRound,
+    },
+    {
+      href: "/account/addresses",
+      label: "Adresses",
+      icon: MapPin,
+    },
+    {
+      href: "/account/security",
+      label: "Sécurité",
+      icon: ShieldCheck,
     },
     {
       href: "/account/notifications",

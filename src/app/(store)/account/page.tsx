@@ -4,6 +4,7 @@ import { AccountTiles } from "@/components/account/AccountTiles";
 import { MenuRows } from "@/components/account/MenuRows";
 import { ProfileCard } from "@/components/account/ProfileCard";
 import { VerifyEmailBanner } from "@/components/account/VerifyEmailBanner";
+import {ProfileProgress} from "@/components/account/ProfileProgress";
 
 export const metadata: Metadata = { title: "Mon compte" };
 
@@ -12,6 +13,7 @@ export default function AccountPage() {
     <div className="space-y-4">
       <AccountHeader />
       <VerifyEmailBanner />
+      <ProfileProgress />
       <AccountTiles />
       <MenuRows />
       <ProfileCard />

@@ -6,8 +6,11 @@ import {
   ChevronLeft,
   FileText,
   LogOut,
+  MapPin,
   Package,
+  ShieldCheck,
   User,
+  UserRound,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,6 +22,9 @@ const items = [
   { href: "/account", label: "Mon profil", icon: User },
   { href: "/account/orders", label: "Mes commandes", icon: Package },
   { href: "/account/quotes", label: "Mes devis", icon: FileText },
+  { href: "/account/profile", label: "Mon profil", icon: UserRound },
+  { href: "/account/addresses", label: "Adresses", icon: MapPin },
+  { href: "/account/security", label: "Sécurité", icon: ShieldCheck },
   { href: "/account/notifications", label: "Notifications", icon: Bell },
 ] as const;
 

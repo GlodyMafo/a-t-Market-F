@@ -22,7 +22,7 @@ const COUNTERS: Counter[] = [
   { key: "quotesPendingReview", label: "Devis à valider", hint: "En attente de votre décision", href: "/admin/quotes" },
   { key: "localToPrepare", label: "Commandes locales à préparer", hint: "Payées, à préparer et livrer", href: "/admin/orders" },
   { key: "partiallyPaid", label: "Paiements partiels", hint: "Reste à encaisser", href: "/admin/orders" },
-  { key: "outOfStockProducts", label: "Produits en rupture", hint: "Produits locaux actifs sans stock" },
+  { key: "outOfStockProducts", label: "Produits en rupture", hint: "Produits locaux actifs sans stock" , href: "/admin/stock"},
 ];
 
 export function DashboardView() {

@@ -16,6 +16,7 @@ import { useTracking } from "@/features/orders/hooks";
 import { KIND_LABEL, ORDER_STATUS, PAYMENT_STATUS, PAYMENT_TYPE_LABEL, orderKind } from "@/features/orders/status";
 import { formatDateTime, formatUsd } from "@/lib/utils";
 import { ApiError, errorMessage } from "@/services/api/errors";
+import { DeliveryAddressCard } from "../account/DeliveryAddressCard";
 
 export function OrderDetail({ orderId }: { orderId: string }) {
   const router = useRouter();
@@ -142,6 +143,8 @@ export function OrderDetail({ orderId }: { orderId: string }) {
         </div>
 
         <aside className="space-y-6 lg:sticky lg:top-[calc(var(--header-h)+1rem)]">
+          <DeliveryAddressCard raw={order.deliveryAddress} />
+          
           <section aria-labelledby="summary-title" className="rounded-3xl border border-line bg-white p-5">
             <h2 id="summary-title" className="font-display text-lg font-extrabold tracking-tight">
               Récapitulatif

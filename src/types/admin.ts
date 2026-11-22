@@ -74,6 +74,7 @@ export interface AdminOrderDetail {
   totalAmount: Money;
   createdAt: IsoDate;
   user: AdminUserRef;
+  deliveryAddress?: unknown;
   items: AdminOrderItem[];
   payments: Payment[];
   trackingEvents: AdminTrackingEvent[];

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -17,6 +18,7 @@ interface PayInput {
   provider: MobileMoneyProvider;
   phone: string;
   paymentType?: PaymentType;
+  addressId?: string;
 }
 
 export function usePayment() {
@@ -27,7 +29,13 @@ export function usePayment() {
   const lock = useRef(false); // un seul envoi à la fois, même en cas de double clic
 
   const pay = useCallback(
-    async ({ orderId: existing, provider, phone, paymentType = "FULL" }: PayInput) => {
+    async ({
+      orderId: existing,
+      provider,
+      phone,
+      paymentType = "FULL",
+      addressId,
+    }: PayInput) => {
       if (lock.current) return;
       lock.current = true;
       setPending(true);
@@ -38,7 +46,11 @@ export function usePayment() {
 
       try {
         if (!orderId) {
-          const order = await createOrder();
+          if (!addressId) {
+            throw new ApiError("Choisissez une adresse de livraison.", "validation");
+          }
+
+          const order = await createOrder(addressId);
           orderId = order.id;
           rememberOrder(orderId);
           void queryClient.invalidateQueries({ queryKey: CART_KEY }); // le backend a vidé le panier
@@ -48,7 +60,10 @@ export function usePayment() {
           await createPayment({ orderId, paymentType, phoneNumber: phone, provider });
         } catch (paymentError) {
           // Un paiement du même type est déjà en cours : on suit simplement celui-là.
-          const alreadyPending = paymentError instanceof ApiError && /existe d[ée]j[àa]/i.test(paymentError.message);
+          const alreadyPending =
+            paymentError instanceof ApiError &&
+            /existe d[ée]j[àa]/i.test(paymentError.message);
+
           if (!alreadyPending) throw paymentError;
         }
 
@@ -56,6 +71,7 @@ export function usePayment() {
         router.push(`/checkout/confirmation/${encodeURIComponent(orderId)}`);
       } catch (failure) {
         const message = errorMessage(failure);
+
         if (createdHere && orderId) {
           // La commande existe mais le paiement n'a pas démarré : la page de suivi permet de réessayer.
           toast.error(message);

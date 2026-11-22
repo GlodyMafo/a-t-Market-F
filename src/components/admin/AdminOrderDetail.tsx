@@ -15,6 +15,7 @@ import { multiplyMoney } from "@/lib/money";
 import { formatDateTime, formatUsd, resolveImageUrl } from "@/lib/utils";
 import { safeHost } from "@/lib/marketplace";
 import { ApiError, errorMessage } from "@/services/api/errors";
+import { DeliveryAddressCard } from "../account/DeliveryAddressCard";
 
 export function AdminOrderDetail({ orderId }: { orderId: string }) {
   const router = useRouter();
@@ -68,7 +69,7 @@ export function AdminOrderDetail({ orderId }: { orderId: string }) {
                 </>
               )}
             </p>
-            <p className="mt-1 text-xs text-muted">Pas d&apos;adresse de livraison enregistrée : la livraison est confirmée par téléphone.</p>
+            <div className="mt-3"><DeliveryAddressCard raw={order.deliveryAddress} /></div>
           </section>
 
           <section aria-labelledby="items-title" className="rounded-3xl border border-line bg-white p-5">

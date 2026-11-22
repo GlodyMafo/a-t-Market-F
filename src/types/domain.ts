@@ -104,6 +104,19 @@ export interface OrderItem {
   product: (Pick<Product, "id" | "name" | "images"> & Record<string, unknown>) | null;
 }
 
+export interface Address {
+  id: string;
+  label: string | null;
+  fullName: string;
+  phone: string;
+  city: string;
+  commune: string | null;
+  neighborhood: string;
+  street: string;
+  landmark: string | null;
+  isDefault: boolean;
+}
+
 export interface Order {
   id: string;
   userId: string;
@@ -112,6 +125,7 @@ export interface Order {
   shippingAmount: Money;
   totalAmount: Money;
   createdAt: IsoDate;
+  deliveryAddress?: unknown;
   items: OrderItem[];
   payments?: Payment[];
   trackingEvents?: TrackingEvent[];
